@@ -74,6 +74,37 @@ app.post('/login', (req, res) => {
 app.get('/admin', authMiddleware, roleMiddleware('administrateur'), (req, res) => {
   res.send('Bienvenue sur la page d\'administration.');
 });
+// Simulation de base de données avec un tableau (dans un projet réel, vous utiliseriez une base de données)
+let projecteurs = [
+    { id: 1, nom: 'Projecteur A', disponible: true },
+    { id: 2, nom: 'Projecteur B', disponible: false },
+    { id: 3, nom: 'Projecteur C', disponible: true },
+  ];
+  
+  // Route pour réserver un projecteur
+  app.post('/reservations', authMiddleware, (req, res) => {
+    const { projecteurId } = req.body;
+  
+    // Trouver le projecteur par ID
+    const projecteur = projecteurs.find(p => p.id === projecteurId);
+  
+    // Vérifier si le projecteur existe
+    if (!projecteur) {
+      return res.status(404).json({ message: 'Projecteur non trouvé.' });
+    }
+  
+    // Vérifier si le projecteur est disponible
+    if (!projecteur.disponible) {
+      return res.status(400).json({ message: 'Le projecteur n\'est pas disponible.' });
+    }
+  
+    // Marquer le projecteur comme réservé (inaccessible)
+    projecteur.disponible = false;
+  
+    // Répondre à la réservation
+    res.json({ message: `Le projecteur "${projecteur.nom}" a été réservé avec succès.` });
+  });
+  
 
 // Démarrer le serveur
 app.listen(port, () => {
