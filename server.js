@@ -10,6 +10,6 @@ app.use(express.json()); // Pour lire les requêtes JSON
 // Route 
 app.use('/api/auth', authRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => console.log(`✅Serveur démarré sur le port ${PORT}`));
 

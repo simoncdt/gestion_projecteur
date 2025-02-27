@@ -1,16 +1,30 @@
-const db = require('../config/db');
+const db = require('../config/db'); // Assure-toi d'avoir une connexion à la base de données
 
 const User = {
-  create: (nom, prenom, email, hashedPassword, callback) => {
-    const sql = `INSERT INTO utilisateurs (nom, prenom, email, password, user_role) VALUES (?, ?, ?, ?, ?)`;
-    db.run(sql, [nom, prenom, email, hashedPassword, 'etudiant'], function (err) {
-      callback(err, { id: this.lastID });
+  findByEmail: (email, callback) => {
+    db.get("SELECT * FROM utilisateurs WHERE email = ?", [email], (err, row) => {
+      if (err) {
+        console.error(err.message);
+        return callback(err);
+      }
+      callback(null, row);
     });
   },
-
-  findByEmail: (email, callback) => {
-    db.get(`SELECT * FROM utilisateurs WHERE email = ?`, [email], callback);
+  create: (nom, prenom, email, password, callback) => {
+    db.run(
+      "INSERT INTO utilisateurs (nom, prenom, email, password, user_role) VALUES (?, ?, ?, ?, 'etudiant')",
+      [nom, prenom, email, password],
+      function (err) {
+        if (err) {
+          console.error(err.message);
+          return callback(err);
+        }
+        callback(null, { id: this.lastID });
+      }
+    );
   }
 };
+    
 
+  
 module.exports = User;
