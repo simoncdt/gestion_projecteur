@@ -6,7 +6,7 @@ function ajouterUtilisateur(nom, prenom, email, password, role, callback) {
     db.run(sql, [nom, prenom, email, password, role], function (err) {
         callback(err, this.lastID);
     });
-}
+} 
 
 // 📌 Récupérer tous les utilisateurs
 function getUtilisateurs(callback) {
