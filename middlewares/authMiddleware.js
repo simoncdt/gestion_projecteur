@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
-
-// Charger les variables d'environnement
 dotenv.config();
 
 const authMiddleware = (req, res, next) => {
@@ -16,7 +14,7 @@ const authMiddleware = (req, res, next) => {
 
   try {
     // Vérifier et décoder le token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Utiliser la clé secrète de votre .env
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Attacher les informations de l'utilisateur à la requête
     req.user = decoded;

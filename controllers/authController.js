@@ -6,7 +6,7 @@ require('dotenv').config();
 const authController = {
   // Contrôleur d'inscription
   register: (req, res) => {
-    const { nom, prenom, email, password } = req.body;
+    const { nom, prenom, email, password, user_role } = req.body;
 
     // Vérification si l'utilisateur existe déjà
     User.findByEmail(email, (err, user) => {
@@ -18,7 +18,7 @@ const authController = {
         if (err) return res.status(500).json({ message: 'Erreur serveur' });
 
         // Création de l'utilisateur
-        User.create(nom, prenom, email, hashedPassword, (err, result) => {
+        User.create(nom, prenom, email, hashedPassword, user_role, (err, result) => {
           if (err) return res.status(500).json({ message: 'Erreur serveur' });
           res.status(201).json({ message: 'Utilisateur créé avec succès', userId: result.id });
         });
@@ -41,7 +41,7 @@ const authController = {
         if (!isMatch) return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
 
         // Génération d'un token JWT
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user.id, role: user.user_role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         res.status(200).json({ message: 'Connexion réussie', token });
       });
