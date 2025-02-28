@@ -48,6 +48,25 @@ function createTables() {
 
         console.log('📌 Les tables ont été vérifiées et créées si nécessaire.');
     });
+    db.run(`
+        CREATE TABLE IF NOT EXISTS reservations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            projecteur_id INTEGER NOT NULL,
+            utilisateur_id INTEGER NOT NULL,
+            date_reservation TEXT NOT NULL,
+            heure_debut TEXT NOT NULL,
+            heure_fin TEXT NOT NULL,
+            FOREIGN KEY (projecteur_id) REFERENCES projecteurs(id),
+            FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Erreur lors de la création de la table reservations :', err.message);
+        } else {
+            console.log('✅ Table reservations créée ou déjà existante.');
+        }
+    });
+     
 }
 
 // Appeler la fonction pour créer les tables

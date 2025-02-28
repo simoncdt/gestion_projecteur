@@ -1,22 +1,32 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
-const db = require('./db'); // Connexion à la base de données SQLite
+
+const db = require('./db'); 
+
+const projectorRoutes = require('./routes/projectorRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 
 dotenv.config();
 const app = express();
 
-app.use(express.json()); // Pour lire les requêtes JSON
+app.use(express.json()); 
 
-// Routes
+
+
+
 app.use('/api/auth', authRoutes);
 
-// Route de test
+app.use('/api', projectorRoutes);
+
+app.use('/api', reservationRoutes);
+
+
 app.get('/', (req, res) => {
   res.send('Gestion des projecteurs - Serveur démarré');
 });
 
-// Démarrer le serveur
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Serveur démarré sur le port ${PORT}`);
