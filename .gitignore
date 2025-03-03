@@ -1,2 +1,12 @@
-"node_modules/" 
-".env" 
+# Ignorer node_modules
+node_modules/
+
+# Ignorer les fichiers de configuration
+.env
+
+# Ignorer les répertoires de build et de couverture
+dist/
+coverage/
+
+# Ignorer les fichiers système
+.DS_Store
